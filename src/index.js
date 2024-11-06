@@ -1,5 +1,6 @@
 // module.exports = { app }
 const {app} = require("./server.js");
+const { dbConnect } = require("./functions/dbFunctions.js");
 
 // module.exports = app;
 // const app = require()
@@ -10,6 +11,7 @@ require("dotenv").config();
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+	await dbConnect();
 	console.log("Server is running on port http://localhost:" + PORT);
 });
