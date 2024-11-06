@@ -1,6 +1,6 @@
 const express = require("express");
 const { User } = require("./models/UserModel");
-const { generateJWT } = require("./functions/jwtFunctions");
+const { generateJWT, validateUserAuth} = require("./functions/jwtFunctions");
 
 const app = express();
 
@@ -20,7 +20,7 @@ app.post("/signup", async (request, response) => {
 	// check that a username and password are provided in request.body 
 	let username = request.body.username;
 	let password = request.body.password;
-	
+
 	if (!username || !password) {
 		response.status(400).json({
 			message:"Incorrect or missing sign-up credentials provided."
@@ -42,6 +42,12 @@ app.post("/signup", async (request, response) => {
 		}
 	});
 });
+
+app.get("/protectedRoute", validateUserAuth, (request, response) => {
+	response.json({
+		message:"You can see protected content because you're signed in!"
+	});
+})
 
 module.exports = {
 	app
